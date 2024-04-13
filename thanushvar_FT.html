@@ -9,28 +9,55 @@
   <button id="b1" onclick="generateTable()">Generate Table</button
   ><br /><br />
 
-  <button
-    id="b2"
-    onclick="addColumn()"
-    style="margin-bottom: 10px; margin-right: 10px"
-  >
-    Add Column
-  </button>
+  <button id="b2" onclick="addColumn()">Add Column</button>
 
-  <button id="b3" onclick="addRow()" style="margin-bottom: 10px">
-    Add Row
-  </button>
+  <button id="b3" onclick="addRow()">Add Row</button>
 
   <script language="javascript">
     var colText = 0;
     var rowText = 0;
+    var styleElement = document.createElement("style");
+    styleElement.innerHTML = `
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      button {
+        padding: 10px;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    `;
+    document.head.appendChild(styleElement);
 
     function generateTable() {
       var rows = document.getElementById("t1").value;
       var cols = document.getElementById("t2").value;
 
       if (isNaN(rows) || isNaN(cols) || rows <= 0 || cols <= 0) {
-        alert("Please enter valid integers only for rows and columns.");
+        alert("Please enter valid positive integers for rows and columns.");
         return;
       }
 
@@ -49,12 +76,12 @@
       tableElement.innerHTML = table;
       document.body.innerHTML = "";
 
-      var addColumButton = document.createElement("button");
-      addColumButton.innerText = "Add Column";
-      addColumButton.onclick = addColumn;
-      addColumButton.style.marginBottom = "10px";
-      addColumButton.style.marginRight = "10px";
-      document.body.appendChild(addColumButton);
+      var addColumnButton = document.createElement("button");
+      addColumnButton.innerText = "Add Column";
+      addColumnButton.onclick = addColumn;
+      addColumnButton.style.marginBottom = "10px";
+      addColumnButton.style.marginRight = "10px";
+      document.body.appendChild(addColumnButton);
 
       var addRowButton = document.createElement("button");
       addRowButton.innerText = "Add Row";
@@ -62,28 +89,39 @@
       addRowButton.style.marginBottom = "10px";
       document.body.appendChild(addRowButton);
 
-      document.body.appendChild(tableElement);
+      document.body.appendChild(tableElement); // Append the table to the body
     }
 
     function addColumn() {
       var table = document.querySelector("table");
-      var rowTextount = table.rows.length;
+      var rowCount = table.rows.length;
       colText++;
-      for (var i = 0; i < rowTextount; i++) {
+      for (var i = 0; i < rowCount; i++) {
         var cell = table.rows[i].insertCell(-1);
         cell.innerHTML = "(" + (i + 1) + "," + colText + ")";
+        cell.style.backgroundColor = getRandomColor();
       }
     }
 
     function addRow() {
       var table = document.querySelector("table");
       var row = table.insertRow(-1);
-      var colTextount = table.rows[0].cells.length;
+      var colCount = table.rows[0].cells.length;
       rowText++;
-      for (var i = 0; i < colTextount; i++) {
+      for (var i = 0; i < colCount; i++) {
         var cell = row.insertCell(-1);
         cell.innerHTML = "(" + rowText + "," + (i + 1) + ")";
+        cell.style.backgroundColor = getRandomColor();
       }
+    }
+
+    function getRandomColor() {
+      var letters = "0123456789ABCDEF";
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     }
   </script>
 </html>
