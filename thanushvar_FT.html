@@ -9,15 +9,81 @@
   <button id="b1" onclick="generateTable()">Generate Table</button
   ><br /><br />
 
-  <button id="b2" onclick="addColumn()">Add Column</button>
+  <button
+    id="b2"
+    onclick="addColumn()"
+    style="margin-bottom: 10px; margin-right: 10px"
+  >
+    Add Column
+  </button>
 
-  <button id="b3" onclick="addRow()">Add Row</button>
+  <button id="b3" onclick="addRow()" style="margin-bottom: 10px">
+    Add Row
+  </button>
 
   <script language="javascript">
-    function generateTable() {}
+    var colText = 0;
+    var rowText = 0;
 
-    function addColumn() {}
+    function generateTable() {
+      var rows = document.getElementById("t1").value;
+      var cols = document.getElementById("t2").value;
 
-    function addRow() {}
+      if (isNaN(rows) || isNaN(cols) || rows <= 0 || cols <= 0) {
+        alert("Please enter valid integers only for rows and columns.");
+        return;
+      }
+
+      colText = cols;
+      rowText = rows;
+      var table = '<table border="1">';
+      for (var i = 0; i < rows; i++) {
+        table += "<tr>";
+        for (var j = 0; j < cols; j++) {
+          table += "<td> (" + (i + 1) + "," + (j + 1) + ")</td>";
+        }
+        table += "</tr>";
+      }
+      table += "</table>";
+      var tableElement = document.createElement("div");
+      tableElement.innerHTML = table;
+      document.body.innerHTML = "";
+
+      var addColumButton = document.createElement("button");
+      addColumButton.innerText = "Add Column";
+      addColumButton.onclick = addColumn;
+      addColumButton.style.marginBottom = "10px";
+      addColumButton.style.marginRight = "10px";
+      document.body.appendChild(addColumButton);
+
+      var addRowButton = document.createElement("button");
+      addRowButton.innerText = "Add Row";
+      addRowButton.onclick = addRow;
+      addRowButton.style.marginBottom = "10px";
+      document.body.appendChild(addRowButton);
+
+      document.body.appendChild(tableElement);
+    }
+
+    function addColumn() {
+      var table = document.querySelector("table");
+      var rowTextount = table.rows.length;
+      colText++;
+      for (var i = 0; i < rowTextount; i++) {
+        var cell = table.rows[i].insertCell(-1);
+        cell.innerHTML = "(" + (i + 1) + "," + colText + ")";
+      }
+    }
+
+    function addRow() {
+      var table = document.querySelector("table");
+      var row = table.insertRow(-1);
+      var colTextount = table.rows[0].cells.length;
+      rowText++;
+      for (var i = 0; i < colTextount; i++) {
+        var cell = row.insertCell(-1);
+        cell.innerHTML = "(" + rowText + "," + (i + 1) + ")";
+      }
+    }
   </script>
 </html>
